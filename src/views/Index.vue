@@ -20,16 +20,26 @@
       </div>
     </div>
     <div class="tableChange">
-      <router-link to="/goods"><span  @click='change(1)' :class='{activeOne:pass===1}'>商品</span></router-link>
-      <router-link to="/evaluate" ><span @click='change(2)' :class='{activeOne:pass===2}'>评价</span></router-link>
-      <router-link to="/merchant" ><span @click='change(3)' :class='{activeOne:pass===3}'>商家</span></router-link>
+      <router-link to="/goods">
+        <span @click="change(1)" :class="{activeOne:pass===1}">商品</span>
+      </router-link>
+      <router-link to="/evaluate">
+        <span @click="change(2)" :class="{activeOne:pass===2}">评价</span>
+      </router-link>
+      <router-link to="/merchant">
+        <span @click="change(3)" :class="{activeOne:pass===3}">商家</span>
+      </router-link>
     </div>
     <!-- 路由容器 -->
     <router-view></router-view>
+    <!-- 来自vue的动画效果 -->
+    <transition name="slide-fade">
+      <div class="shopCarpage" v-show="clickHere">购物车延申页</div>
+    </transition>
     <p class="shopCar">
       <i-col span="16" class="left">
         <div class="leftOne">
-          <img src="../assets/01.png" alt />
+          <img src="../assets/01.png" @click="clickHere=!clickHere" />
         </div>
       </i-col>
       <i-col span="8" class="right">￥20起送</i-col>
@@ -43,10 +53,10 @@ export default {
   data() {
     return {
       datas: {
-        supports: [{ description: "" }],
-       },
-       pass:1
-
+        supports: [{ description: "" }]
+      },
+      pass: 1,
+      clickHere: false
     };
   },
   created() {
@@ -54,9 +64,9 @@ export default {
       this.datas = res.data.data;
     });
   },
-  methods:{
-   change(index){
-     this.pass=index
+  methods: {
+    change(index) {
+      this.pass = index;
     }
   }
 };
@@ -69,8 +79,8 @@ export default {
     justify-content: space-around;
     height: 30px;
     line-height: 30px;
-    .activeOne{
-      color:red;
+    .activeOne {
+      color: red;
     }
   }
 }
@@ -139,5 +149,26 @@ export default {
       }
     }
   }
+}
+
+.shopCarpage {
+  width: 100%;
+  height: 300px;
+  background-color: burlywood;
+  position: fixed;
+  left: 0;
+  bottom: 50px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s  ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
 }
 </style>

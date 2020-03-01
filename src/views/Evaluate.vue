@@ -63,7 +63,7 @@ export default {
   },
   created() {
     getRatings().then(res => {
-      console.log(res);
+      // console.log(res);
       this.datas = res.data.data;
     });
   }

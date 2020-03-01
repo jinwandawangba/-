@@ -2,9 +2,14 @@
   <div class="Goods">
     <Row class="goodsOne">
       <i-col span="6" class="One">
-        <p   v-for="(item,index) in datas" :key="item.id" :class="{active:index==indexOne}" @click='clickTitle(index)' >
-          <img v-show='item.type==1'  src="../assets/discount_3@2x.png" alt="">
-          <img v-show="item.type==2"   src="../assets/special_3@2x.png" alt="">
+        <p
+          v-for="(item,index) in datas"
+          :key="item.id"
+          :class="{active:index==indexOne}"
+          @click="clickTitle(index)"
+        >
+          <img v-show="item.type==1" src="../assets/discount_3@2x.png" alt />
+          <img v-show="item.type==2" src="../assets/special_3@2x.png" alt />
           <!-- 左边商品名 -->
           {{ item.name }}
         </p>
@@ -21,7 +26,14 @@
                 <div>{{child.name}}</div>
                 <!-- <div>{{child.description}}</div> -->
                 <div>月销{{child.sellCount}}好评{{child.rating}}%</div>
-                <div>￥{{child.price}}</div>
+                <div class="addNum">
+                  <span>￥{{child.price}}</span>
+                  <span>
+                   <Icon type="ios-remove-circle-outline" v-show='num>=1'/>
+                   <span v-show='num>=1'>{{num}}</span>
+                   <Icon type="md-add-circle"  @click='addNum()'/>
+                  </span>
+                </div>
               </div>
             </li>
           </div>
@@ -33,54 +45,61 @@
 
 <script>
 import { getGoods } from "../api/apis";
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
 export default {
   data() {
     return {
-      datas:[],
-      indexOne:0,
+      datas: [],
+      indexOne: 0,
+      num:0
     };
   },
   created() {
     getGoods().then(res => {
-      console.log(res);
       this.datas = res.data.data;
+      console.log(res)
     });
   },
-  mounted(){
+  mounted() {
     // 右侧滚动板
-    this.rightDiv=new BScroll(document.querySelector('.Two'),{
-      probeType:3 //实时派发滚动事件
+    // 右联左
+    this.rightDiv = new BScroll(document.querySelector(".Two"), {click:true},{
+      probeType: 3 //实时派发滚动事件
     });
-    this.rightDiv.on('scroll',( {y} )=>{
-       let _y=Math.abs(y)
-       for(let divObj of this.getDiv){
-         if(_y>=divObj.min && _y<divObj.max){
-           this.indexOne=divObj.index
-           return
-         }
-       }
-    })
-
+    this.rightDiv.on("scroll", ({ y }) => {
+      let _y = Math.abs(y);
+      for (let divObj of this.getDiv) {
+        if (_y >= divObj.min && _y < divObj.max) {
+          this.indexOne = divObj.index;
+          console.log(this.indexOne);
+          return;
+        }
+      }
+    });
   },
-  methods:{
-    clickTitle(index){
-     this.indexOne=index
-     this.rightDiv.scrollToElement(document.getElementById(index),600)
+  methods: {
+    // 左联右
+    clickTitle(index) {
+      this.indexOne = index;
+      this.rightDiv.scrollToElement(document.getElementById(index), 600);
+    },
+    addNum(){
+      this.num++
     }
   },
-  computed:{
-  getDiv(){
-    let arr=[]
-    let total=0
-    for(let i=0;i<this.datas.length;i++){
-      let curDivheight=document.getElementById(i).offsetHeight
-      arr.push({min:total,max:total+curDivheight,index:i})
-      total+=curDivheight
+  computed: {
+    // 右联左
+    getDiv() {
+      let arr = [];
+      let total = 0;
+      for (let i = 0; i < this.datas.length; i++) {
+        //由于高度和实际多了一像素，所以这里多减一像素
+        let curDivheight = document.getElementById(i).offsetHeight - 1;
+        arr.push({ min: total, max: total + curDivheight, index: i });
+        total += curDivheight;
+      }
+      return arr;
     }
-    console.log(arr)
-    return arr 
-  }
   }
 };
 </script>
@@ -93,8 +112,8 @@ export default {
   .Two {
     height: 100%;
   }
-  .One{
-    img{
+  .One {
+    img {
       width: 12px;
     }
   }
@@ -122,7 +141,7 @@ export default {
 
     li {
       display: flex;
-      justify-content:flex-start;
+      justify-content: flex-start;
       height: 100px;
       line-height: 10px;
       padding-left: 20%;
@@ -133,15 +152,31 @@ export default {
   }
 
   .goodsInfo {
-    padding-left: 10px;
+    width: 100%;
+    padding: 0 10px;
   }
   .classify {
     text-align: center;
     background-color: #f4f5f7;
+    height: 21px;
   }
 
-  .active{
+  .active {
     background-color: antiquewhite;
+  }
+
+  .addNum {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .ivu-icon-ios-remove-circle-outline {
+    font-size: 25px;
+    color:#009FD8;
+  }
+  .ivu-icon-md-add-circle{
+    font-size: 25px;
+    color:#02A1DD
   }
 }
 </style>
