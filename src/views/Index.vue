@@ -1,23 +1,27 @@
 <template>
   <div class="index">
     <div class="header" :style="{backgroundImage:'url('+datas.avatar+')'}">
-      <div class="hLeft">
-        <img :src="datas.avatar" />
+      <div class="headerOne">
+        <div class="hLeft">
+          <img :src="datas.avatar" />
+        </div>
+        <div class="hRight">
+          <div>
+            <img src="../assets/brand@2x.png" alt class="imgOne" />
+            <span class="shopName">{{datas.name}}</span>
+          </div>
+          <div>
+            <span>{{datas.description}}</span>
+            <span>/{{datas.deliveryTime}}分钟送达</span>
+          </div>
+          <div>
+            <img src="../assets/decrease_1@2x.png" alt class="imgTwo" />
+            <span>{{datas.supports[0].description}},满50减10</span>
+          </div>
+        </div>
       </div>
-      <div class="hRight">
-        <div>
-          <img src="../assets/brand@2x.png" alt class="imgOne" />
-          <span class="shopName">{{datas.name}}</span>
-        </div>
-        <div>
-          <span>{{datas.description}}</span>
-          <span>/{{datas.deliveryTime}}分钟送达</span>
-        </div>
-        <div>
-          <img src="../assets/decrease_1@2x.png" alt class="imgTwo" />
-          <span>{{datas.supports[0].description}},满50减10</span>
-        </div>
-      </div>
+
+      <div class="headerTwo"><img src="../assets/bulletin@2x.png" alt="">{{datas.bulletin}}</div>
     </div>
     <div class="tableChange">
       <router-link to="/goods">
@@ -41,6 +45,8 @@
         <div class="leftOne">
           <img src="../assets/01.png" @click="clickHere=!clickHere" />
         </div>
+        <span class="s1">￥10</span>
+        <span class="s2">另需配送费￥4元</span>
       </i-col>
       <i-col span="8" class="right">￥20起送</i-col>
     </p>
@@ -88,10 +94,25 @@ export default {
 .header {
   height: 150px;
   background-color: #434242;
-  display: flex;
-  justify-content: flex-start;
   color: #ffffff;
   // filter:blur(4px);
+  .headerOne{
+     display: flex;
+  justify-content: flex-start;
+  }
+  .headerTwo{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px  10px; 
+    background-color: rgba(41, 3c,39, 0.1);
+    margin-top: 10px;
+    img{
+      width: 24px;
+      margin-right: 5px;
+    }
+    
+  }
 }
 .imgOne {
   width: 30px;
@@ -99,13 +120,18 @@ export default {
 .imgTwo {
   width: 12px;
 }
-.hLeft img {
-  width: 100px;
-  margin-top: 25px;
-  margin-left: 25px;
+.hLeft {
+  height: 100px;
+
+  img {
+    width: 92px;
+    margin-top: 18px;
+    margin-left: 25px;
+  }
 }
 .hRight {
-  margin-top: 6%;
+  height: 100px;
+  margin-top: 3%;
   margin-left: 5%;
   line-height: 35px;
 }
@@ -133,8 +159,16 @@ export default {
 
   .left {
     position: relative;
+    .s1 {
+      margin-left: 90px;
+      font-size: 20px;
+    }
+    .s2 {
+      margin-left: 30px;
+      font-size: 12px;
+    }
     .leftOne {
-      height: 80px;
+      height: 100px;
       width: 80px;
       position: absolute;
       top: -20px;
@@ -164,7 +198,7 @@ export default {
   transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.8s  ease;
+  transition: all 0.8s ease;
 }
 .slide-fade-enter,
 .slide-fade-leave-to {

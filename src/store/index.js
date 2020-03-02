@@ -6,16 +6,35 @@ Vue.use(Vuex)
 var store = new Vuex.Store({
     state:{
         name:'张三',
-        obj:{name:'李白',age:20}
+        obj:{name:'李白',age:20},
+        goodsList:[],
+        talkList:[],
+        merchantInfo:{},
     },
     // 改变，改变state的唯一方式
     mutations:{
         // 每一个改变函数都会接收一个state参数，指向上面的state
-        changeName(state,name){
-            state.name=name
+        initGoodsList(state,newArr){
+            state.goodsList=newArr
+        },
+        initTalklist(state,newArr){
+            state.talkList=newArr
+        },
+        initMerchant(state,newArr){
+             state.merchantInfo=newArr
         }
+    },
+    getters:{
+      addnum(state){
+          for (let v of state.goodsList){
+              for(let j of v.foods){
+                  return j
+              }
+          }
+      }
     }
 })
-// 参数一，要触发的参数名字，要传入的参数
-store.commit('changeName','杜甫')
-console.log(store.state.name)
+
+
+
+export default store

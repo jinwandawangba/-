@@ -32,7 +32,7 @@
       <Icon type="md-checkmark-circle"  size='25'/>
       <label>只看有内容的评价</label>
     </div>
-    <div class="userEva" v-for="item in datas" :key="item.id">
+    <div class="userEva" v-for="item in Talklist" :key="item.id">
       <div>
         <img :src="item.avatar" alt />
       </div>
@@ -57,15 +57,20 @@ import { getRatings } from "../api/apis";
 export default {
   data() {
     return {
-      datas: [],
+      // datas: [],
       valueDisabled: 4
     };
   },
   created() {
     getRatings().then(res => {
-      // console.log(res);
-      this.datas = res.data.data;
+      // console.log(res)
+     this.$store.commit('initTalklist',res.data.data)
     });
+  },
+  computed:{
+      Talklist(){
+        return this.$store.state.talkList
+      }
   }
 };
 </script>
@@ -80,14 +85,16 @@ export default {
     text-align: center;
     line-height: 20px;
     font-size: 12px;
-    padding-top: 20px;
+    padding-top: 10px;
     .pOne {
       font-size: 30px;
       color: coral;
+     
     }
   }
   .pTwo {
     font-weight: 600;
+     margin-top:10px;
   }
 
   .scoreRight {
