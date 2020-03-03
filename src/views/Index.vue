@@ -38,14 +38,17 @@
     <router-view></router-view>
     <!-- 来自vue的动画效果 -->
     <transition name="slide-fade">
-      <div class="shopCarpage" v-show="clickHere">购物车延申页</div>
+      <div class="shopCarpage" v-show="clickHere">
+        <!-- 组件化购物车页 -->
+        <shopCarpage></shopCarpage>
+      </div>
     </transition>
     <p class="shopCar">
       <i-col span="16" class="left">
         <div class="leftOne">
           <img src="../assets/01.png" @click="clickHere=!clickHere" />
         </div>
-        <span class="s1">￥10</span>
+        <span class="s1">￥{{getTotalPrice}}</span>
         <span class="s2">另需配送费￥4元</span>
       </i-col>
       <i-col span="8" class="right">￥20起送</i-col>
@@ -55,6 +58,7 @@
 
 <script>
 import { getSeller } from "../api/apis";
+import shopCarpage from '../views/Shoppingcart'
 export default {
   data() {
     return {
@@ -74,6 +78,18 @@ export default {
     change(index) {
       this.pass = index;
     }
+  },
+  computed:{
+   getTotalPrice(){
+       let totalPrice=0
+       for(let food of this.$store.getters.getShopcarGoods){
+         totalPrice+=food.price*food.num
+       }
+       return  totalPrice
+   }
+  },
+  components:{
+    shopCarpage
   }
 };
 </script>
@@ -188,7 +204,7 @@ export default {
 .shopCarpage {
   width: 100%;
   height: 300px;
-  background-color: burlywood;
+  background-color:cornsilk;
   position: fixed;
   left: 0;
   bottom: 50px;

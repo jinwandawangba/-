@@ -29,9 +29,9 @@
                 <div class="addNum">
                   <span>￥{{child.price}}</span>
                   <span>
-                    <Icon type="ios-remove-circle-outline" v-show="child.num>0" />
+                    <Icon type="ios-remove-circle-outline" v-show="child.num>0 " @click="changeNum(child.name,-1)"/>
                     <span v-show=" child.num>0">{{child.num}}</span>
-                    <Icon type="md-add-circle" @click="addNum(child.num)" />
+                    <Icon type="md-add-circle" @click="changeNum(child.name,1)" />
                   </span>
                 </div>
               </div>
@@ -55,7 +55,7 @@ export default {
   created() {
     getGoods().then(res => {
       this.$store.commit("initGoodsList", res.data.data);
-      console.log(this.$store.getters.addnum);
+      console.log(this.$store.state.goodsList);
       // console.log(res); 
     });
   },
@@ -86,10 +86,9 @@ export default {
       this.indexOne = index;
       this.rightDiv.scrollToElement(document.getElementById(index), 600);
     },
-    addNum(k) {
-         if(k==0){
-        this.$store.getters.addnum.num+=1
-         }
+    // 改变商品数量传参
+    changeNum(name,val) {
+       this.$store.commit('changeNum',{name,val})
     }
   },
   computed: {

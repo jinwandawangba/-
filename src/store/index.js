@@ -22,15 +22,37 @@ var store = new Vuex.Store({
         },
         initMerchant(state,newArr){
              state.merchantInfo=newArr
+        },
+        // 改变商品数量
+        changeNum(state,obj){
+            for (let v of state.goodsList){
+                for(let j of v.foods){
+                    if(j.name==obj.name){
+                        j.num+=obj.val
+                    }
+                }
+            }
         }
     },
     getters:{
-      addnum(state){
-          for (let v of state.goodsList){
-              for(let j of v.foods){
-                  return j
-              }
-          }
+      getShopcarGoods(state){
+        //   定义两个空数组去重
+           let arr=[]
+           let goodsName=[]
+
+           for(let objType of state.goodsList){
+               for(let food of objType.foods ){
+                   if(food.num>0){
+                       if(!goodsName.includes(food.name)){
+                        //    如果后面数组内有相应名字就不push
+                           arr.push(food)
+                           goodsName.push(food.name)
+                       }
+                   }
+               }
+           }
+
+           return arr
       }
     }
 })
